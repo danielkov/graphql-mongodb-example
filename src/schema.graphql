@@ -1,0 +1,49 @@
+# Root Query type (entry point) of the schema
+type Query {
+    # Retrieves a single post by id
+    post(_id: String): Post
+    # Retrieves a list of all posts
+    posts: [Post]
+    # Retrieves a single comment by id
+    comment(_id: String): Comment
+}
+
+# A Post is resource stored in MongoDB
+type Post {
+    # The id gets automatically assigned by MongoDB and is unique to each item
+    _id: String
+    # Title is a short explanation of the post
+    title: String
+    # Information the post is trying to convey
+    content: String
+    # When assigning a new comment to this post, this list will get updated
+    comments: [Comment]
+}
+
+# A Comment is feedback for each Post
+type Comment {
+    # The id gets automatically assigned by MongoDB and is unique to each item
+    _id: String
+    # This is used to associate the Comment with the corresponding Post
+    postId: String
+    # The body of the comment
+    content: String
+    # Retrievable is the Post to which this comment had been submitted to
+    post: Post
+}
+
+# Root Mutation type (entry point) of the schema
+type Mutation {
+    # Creates a new post with the title and content provided, returns the post
+    createPost(title: String, content: String): Post
+    # Creates new comment based on the post ID and content, returns the comment
+    createComment(postId: String, content: String): Comment
+}
+
+# Schema root for this project
+schema {
+    # Query root on the Schema root
+    query: Query
+    # Mutation root on the Schema root
+    mutation: Mutation
+}
